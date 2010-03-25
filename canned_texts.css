@@ -1,0 +1,6 @@
+/* $Id$ */
+
+span.canned-texts-throbbing {
+  background: url(throbber.gif) no-repeat right center;
+  padding-right: 18px;
+}

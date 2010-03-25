@@ -1,0 +1,6 @@
+; $Id$
+name = Canned Texts
+description = Allows to insert canned texts into text areas using a select box with ajax
+package = Other
+core = 6.x
+dependencies[] = views
