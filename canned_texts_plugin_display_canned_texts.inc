@@ -2,6 +2,7 @@
 // $Id$
 
 class canned_texts_plugin_display_canned_texts extends views_plugin_display {
+  var $row_id;
 
   function option_definition() {
     $options = parent::option_definition();
@@ -128,6 +129,12 @@ class canned_texts_plugin_display_canned_texts extends views_plugin_display {
 
   function uses_exposed() {}
 
+  function query() {
+    if ($this->view->style_plugin->uses_row_plugin()) {
+      $this->row_id = $this->view->query->add_field($this->view->query->base_table, $this->view->query->base_field);
+    }
+  }
+
   function execute() {
     return $this->view->render($this->display->id);
   }
@@ -146,11 +153,11 @@ class canned_texts_plugin_display_canned_texts extends views_plugin_display {
       return;
     }
 
-    if ($this->view->base_table == 'node') {
-      $id = 'nid';
+    if (!empty($this->row_id)) {
+      $id = $this->row_id;
     }
     else {
-      $id = 'cid';
+      return array();
     }
 
     // Group the rows according to the grouping field, if specified.
