@@ -140,6 +140,12 @@ function canned_texts_form_alter(&$form, &$form_state, $form_id) {
         $options = array(
           '' => t('Select one'),
         );
+        $row_plugin = $view->display_handler->get_option('row_plugin');
+        if ($row_plugin != 'fields') {
+          drupal_set_message(t('Canned Texts only works with views that uses <strong>fields</strong> as rows plugins.
+          This view is using <strong>@plugin</strong> as row plugin.', array('@plugin' => $row_plugin)), 'error');
+          continue;
+        }
         if (!empty($view->result)) {
           foreach ($view->display_handler->render_array() as $id => $row) {
             $options[$id] = filter_xss($row, array());
