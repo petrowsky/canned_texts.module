@@ -3,7 +3,12 @@
 Drupal.behaviors.canned_texts_load = function(context) {
 
   if (typeof(insertTextarea) == 'undefined') {
-    insertTextarea = $('#edit-body').get(0) || false;
+    if ($('#edit-body').length > 0) {
+      insertTextarea = $('#edit-body').get(0) || false;
+    }
+    else {
+      insertTextarea = $('#edit-comment').get(0) || false;
+    }
   }
 
   $(".canned_text_widget").change(function () {
