@@ -1,4 +1,3 @@
-// $Id$
 
 Drupal.behaviors.canned_texts_load = function(context) {
 

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 class canned_texts_plugin_display_canned_texts extends views_plugin_display {
   var $row_id;
