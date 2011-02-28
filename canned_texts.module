@@ -128,7 +128,7 @@ function canned_texts_form_alter(&$form, &$form_state, $form_id) {
       $view = views_get_view($info['name']);
       $view->set_display($info['display']);
       if ($view->access($info['display'])) {
-        if ($view->base_table != 'node' && $view->base_table != 'comment') {
+        if ($view->base_table != 'node' && $view->base_table != 'comments') {
           drupal_set_message(t('Canned Texts only works with views that displays nodes or comments.
           This view is using <strong>@table</strong> as base table.', array('@table' => $view->base_table)), 'error');
           continue;
