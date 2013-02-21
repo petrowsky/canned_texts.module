@@ -1,8 +1,8 @@
 <?php
 
 /**
-* Implements hook_entity_info().
-*/
+ * Implements hook_entity_info().
+ */
 function canned_texts_entity_info() {
   return array(
     'canned_text' => array(
@@ -47,6 +47,10 @@ function canned_text_access($op, $type = NULL, $account = NULL) {
   return user_access('administer canned texts', $account);
 }
 
+function canned_text_load($machine_name) {
+  return canned_texts_get_items($machine_name);
+}
+
 /**
 * Gets an array of all profile types, keyed by the type name.
 *
@@ -89,14 +93,9 @@ function canned_texts_field_info() {
       'settings' => array('allowed_values' => array()),
       'default_widget' => 'options_select',
       'default_formatter' => 'list_default',
-      'storage' => array(
-        'type' => 'no_storage',
-        'module' => 'canned_text',
-      )
     ),
   );
 }
-
 
 /**
  * Implements hook_field_settings_form().
@@ -152,4 +151,43 @@ function canned_texts_options_list($field, $instance, $entity_type, $entity) {
     $canned_texts[$canned_text->name] = check_plain($canned_text->label);
   }
   return $canned_texts;
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function canned_texts_field_widget_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['type'] == 'canned_text') {
+    drupal_add_js(drupal_get_path('module', 'canned_texts') . '/canned_texts.js');
+    $element['#prefix'] = "<div class ='canned-text-wrapper'>";
+    $rel = 'edit-' . $context['field']['field_name'] . '-' . $context['langcode'];
+    $rel = str_replace('_', '-', $rel);
+    $rel = str_replace('--', '-', $rel);
+    $element['#suffix'] = "<a rel = '" . $rel . "'href ='#' class ='canned-text-insert-button'>" . t('Insert') . '</a></div>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function canned_texts_menu() {
+  $items['canned_texts/%canned_text'] = array(
+    'title' => 'Canned Text',
+    'page callback' => 'canned_text_ajax_load',
+    'page arguments' => array(1),
+    'access arguments' => array('insert canned texts'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Ajax callback to load a canned text.
+ */
+function canned_text_ajax_load($canned_text) {
+  if (!empty($canned_text->content)) {
+    print $canned_text->content;
+    exit;
+  }
 }
