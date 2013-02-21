@@ -1,1 +1,80 @@
 <?php
+
+/**
+* Implements hook_entity_info().
+*/
+function canned_texts_entity_info() {
+  return array(
+    'canned_text' => array(
+      'label' => t('Canned Text'),
+      'entity class' => 'Entity',
+      'controller class' => 'EntityAPIControllerExportable',
+      'base table' => 'canned_texts',
+      'entity keys' => array(
+        'id' => 'id',
+        'label' => 'label',
+        'name' => 'name',
+      ),
+      'exportable' => TRUE,
+      'access callback' => 'canned_text_access',
+      'module' => 'canned_texts',
+      'label callback' => 'entity_class_label',
+      'uri callback' => 'entity_class_uri',
+      'admin ui' => array(
+        'path' => 'admin/content/canned_texts',
+        'file' => 'canned_texts.admin.inc',
+      ),
+    ),
+  );
+}
+
+/**
+* Access callback for the entity API.
+*
+* @param $op
+*   The operation being performed. One of 'view', 'update', 'create', 'delete'
+*   or just 'edit' (being the same as 'create' or 'update').
+* @param $profile
+*   (optional) A profile to check access for. If nothing is given, access for
+*   all profiles is determined.
+* @param $account
+*   (optional) The user to check for. Leave it to NULL to check for the global user.
+*
+* @return boolean
+*   Whether access is allowed or not.
+*/
+function canned_text_access($op, $type = NULL, $account = NULL) {
+  return user_access('administer canned texts', $account);
+}
+
+/**
+* Gets an array of all profile types, keyed by the type name.
+*
+* @param $item_name
+*   If set, the type with the given name is returned.
+*
+* @return CannedText[]
+*   Depending whether $item_name isset, an array of canned texts or a single
+*   one.
+*/
+function canned_texts_get_items($item_name = NULL) {
+  $types = entity_load_multiple_by_name('canned_text', isset($item_name) ? array($item_name) : FALSE);
+  return isset($item_name) ? reset($types) : $types;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function canned_texts_permission() {
+  return array(
+    'administer canned texts' =>  array(
+      'title' => t('Administer canned texts'),
+      'description' => t('Allows to create, update and delete canned texts.'),
+    ),
+    'insert canned texts' =>  array(
+      'title' => t('Insert canned texts'),
+      'description' => t('Allows use the Canned Texts module to insert text into other content.'),
+    ),
+  );
+}
+
