@@ -23,6 +23,7 @@ function canned_texts_entity_info() {
       'admin ui' => array(
         'path' => 'admin/content/canned_texts',
         'file' => 'canned_texts.admin.inc',
+        'controller class' => 'CannedTextsUIController',
       ),
     ),
   );
@@ -189,5 +190,21 @@ function canned_text_ajax_load($canned_text) {
   if (!empty($canned_text->content)) {
     print $canned_text->content;
     exit;
+  }
+}
+
+/**
+* UI controller - may be put in any include file and loaded via the code registry.
+*/
+class CannedTextsUIController extends EntityDefaultUIController {
+
+  /**
+   * Overrides hook_menu() defaults.
+   */
+  public function hook_menu() {
+    $items = parent::hook_menu();
+    $items[$this->path]['description'] = 'Create, update and deleted canned texts.';
+    $items[$this->path]['type'] =  MENU_LOCAL_TASK | MENU_NORMAL_ITEM;
+    return $items;
   }
 }
