@@ -78,3 +78,78 @@ function canned_texts_permission() {
   );
 }
 
+/**
+ * Implements hook_field_info().
+ */
+function canned_texts_field_info() {
+  return array(
+    'canned_text' => array(
+      'label' => t('Canned Text'),
+      'description' => t("This is a fake field to allow insert Canned text into other entities."),
+      'settings' => array('allowed_values' => array()),
+      'default_widget' => 'options_select',
+      'default_formatter' => 'list_default',
+      'storage' => array(
+        'type' => 'no_storage',
+        'module' => 'canned_text',
+      )
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function canned_texts_field_settings_form($field, $instance, $has_data) {
+  $settings = $field['settings'];
+
+  switch ($field['type']) {
+    case 'canned_text':
+      $res = db_query("SELECT name, label FROM {canned_texts}")->fetchAll();
+      foreach ($res as $canned_text) {
+        $canned_texts[$canned_text->name] = check_plain($canned_text->label);
+      }
+
+      $form['allowed_values'] = array(
+        '#type' => 'select',
+        '#title' => t('Allowed values list'),
+        '#size' => 10,
+        '#multiple' => TRUE,
+        '#options' => $canned_texts,
+      );
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_field_widget_info_alter().
+ */
+function canned_texts_field_widget_info_alter(&$info) {
+  $widgets = array(
+    'options_select' => array('canned_text'),
+  );
+
+  foreach ($widgets as $widget => $field_types) {
+    $info[$widget]['field types'] = array_merge($info[$widget]['field types'], $field_types);
+  }
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function canned_texts_field_is_empty() {
+  return TRUE;
+}
+
+/**
+ * Implements hook_options_list().
+ */
+function canned_texts_options_list($field, $instance, $entity_type, $entity) {
+  $res = db_query("SELECT name, label FROM {canned_texts} WHERE name IN (:names)", array(':names' => $field['settings']['allowed_values']))->fetchAll();
+  foreach ($res as $canned_text) {
+    $canned_texts[$canned_text->name] = check_plain($canned_text->label);
+  }
+  return $canned_texts;
+}

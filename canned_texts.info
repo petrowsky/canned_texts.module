@@ -3,3 +3,4 @@ description = Allows to insert canned texts into text areas using a select box w
 package = Other
 core = 7.x
 dependencies[] = entity
+dependencies[] = list
