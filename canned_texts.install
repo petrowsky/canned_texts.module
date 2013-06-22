@@ -14,9 +14,9 @@ function canned_texts_schema() {
     'description' => 'Stores information about all defined canned texts.',
     'fields' => array(
       'id' => array(
+        'description' => 'Primary Key: Unique canned text ID.',
         'type' => 'serial',
         'not null' => TRUE,
-        'description' => 'Primary Key: Unique canned text ID.',
       ),
       'name' => array(
         'description' => 'The machine-readable name of this canned text.',
@@ -32,13 +32,13 @@ function canned_texts_schema() {
         'default' => '',
       ),
       'status' => array(
+        'description' => 'The exportable status of the entity.',
         'type' => 'int',
         'not null' => TRUE,
         // Set the default to ENTITY_CUSTOM without using the constant as it is
         // not safe to use it at this point.
         'default' => 0x01,
         'size' => 'tiny',
-        'description' => 'The exportable status of the entity.',
       ),
       'module' => array(
         'description' => 'The name of the providing module if the entity has been defined in code.',
@@ -47,10 +47,10 @@ function canned_texts_schema() {
         'not null' => FALSE,
       ),
       'content' => array(
+        'description' => 'The content of the canned text.',
         'type' => 'text',
         'not null' => FALSE,
         'size' => 'big',
-        'description' => 'The content of the canned text.',
       ),
     ),
     'primary key' => array('id'),
