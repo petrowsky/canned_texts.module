@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Canned Texts Module
+ */
+
+/**
  * Implements hook_entity_info().
  */
 function canned_texts_entity_info() {
@@ -30,20 +35,21 @@ function canned_texts_entity_info() {
 }
 
 /**
-* Access callback for the entity API.
-*
-* @param $op
-*   The operation being performed. One of 'view', 'update', 'create', 'delete'
-*   or just 'edit' (being the same as 'create' or 'update').
-* @param $profile
-*   (optional) A profile to check access for. If nothing is given, access for
-*   all profiles is determined.
-* @param $account
-*   (optional) The user to check for. Leave it to NULL to check for the global user.
-*
-* @return boolean
-*   Whether access is allowed or not.
-*/
+ * Access callback for the entity API.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $type
+ *   (optional) A profile to check access for. If nothing is given, access for
+ *   all profiles is determined.
+ * @param $account
+ *   (optional) The user to check for. Leave it to NULL to check for the
+ *   global user.
+ *
+ * @return bool
+ *   Whether access is allowed or not.
+ */
 function canned_text_access($op, $type = NULL, $account = NULL) {
   return user_access('administer canned texts', $account);
 }
@@ -53,15 +59,15 @@ function canned_text_load($machine_name) {
 }
 
 /**
-* Gets an array of all profile types, keyed by the type name.
-*
-* @param $item_name
-*   If set, the type with the given name is returned.
-*
-* @return CannedText[]
-*   Depending whether $item_name isset, an array of canned texts or a single
-*   one.
-*/
+ * Gets an array of all profile types, keyed by the type name.
+ *
+ * @param $item_name
+ *   If set, the type with the given name is returned.
+ *
+ * @return CannedText[]
+ *   Depending whether $item_name isset, an array of canned texts or a single
+ *   one.
+ */
 function canned_texts_get_items($item_name = NULL) {
   $types = entity_load_multiple_by_name('canned_text', isset($item_name) ? array($item_name) : FALSE);
   return isset($item_name) ? reset($types) : $types;
@@ -72,11 +78,11 @@ function canned_texts_get_items($item_name = NULL) {
  */
 function canned_texts_permission() {
   return array(
-    'administer canned texts' =>  array(
+    'administer canned texts' => array(
       'title' => t('Administer canned texts'),
       'description' => t('Allows to create, update and delete canned texts.'),
     ),
-    'insert canned texts' =>  array(
+    'insert canned texts' => array(
       'title' => t('Insert canned texts'),
       'description' => t('Allows use the Canned Texts module to insert text into other content.'),
     ),
@@ -194,8 +200,10 @@ function canned_text_ajax_load($canned_text) {
 }
 
 /**
-* UI controller - may be put in any include file and loaded via the code registry.
-*/
+ * UI controller
+ *
+ * May be put in any include file and loaded via the code registry.
+ */
 class CannedTextsUIController extends EntityDefaultUIController {
 
   /**
@@ -204,7 +212,7 @@ class CannedTextsUIController extends EntityDefaultUIController {
   public function hook_menu() {
     $items = parent::hook_menu();
     $items[$this->path]['description'] = 'Create, update and deleted canned texts.';
-    $items[$this->path]['type'] =  MENU_LOCAL_TASK | MENU_NORMAL_ITEM;
+    $items[$this->path]['type'] = MENU_LOCAL_TASK | MENU_NORMAL_ITEM;
     return $items;
   }
 }
