@@ -54,6 +54,9 @@ function canned_text_access($op, $type = NULL, $account = NULL) {
   return user_access('administer canned texts', $account);
 }
 
+/**
+ * Wrapper function for canned_texts_get_items().
+ */
 function canned_text_load($machine_name) {
   return canned_texts_get_items($machine_name);
 }

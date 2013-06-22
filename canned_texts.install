@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Canned Texts Install
+ */
+
+/**
  * Implements hook_schema().
  */
 function canned_texts_schema() {
@@ -13,7 +18,7 @@ function canned_texts_schema() {
         'not null' => TRUE,
         'description' => 'Primary Key: Unique canned text ID.',
       ),
-    'name' => array(
+      'name' => array(
         'description' => 'The machine-readable name of this canned text.',
         'type' => 'varchar',
         'length' => 32,

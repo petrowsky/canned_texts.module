@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Canned Texts Admin Form
+ */
+
+/**
  * Generates the Canned Text editing form.
  */
 function canned_text_form($form, &$form_state, $canned_text, $op = 'edit') {
@@ -20,7 +25,7 @@ function canned_text_form($form, &$form_state, $canned_text, $op = 'edit') {
   $form['name'] = array(
     '#type' => 'machine_name',
     '#default_value' => isset($canned_text->name) ? $canned_text->name : '',
-    //'#disabled' => $canned_text->isLocked(),
+    // '#disabled' => $canned_text->isLocked(),
     '#machine_name' => array(
       'exists' => 'canned_texts_get_items',
       'source' => array('label'),
@@ -45,8 +50,8 @@ function canned_text_form($form, &$form_state, $canned_text, $op = 'edit') {
 }
 
 /**
-* Form API submit callback for the canned text form.
-*/
+ * Form API submit callback for the canned text form.
+ */
 function canned_text_form_submit(&$form, &$form_state) {
   $canned_text = entity_ui_form_submit_build_entity($form, $form_state);
   // Save and go back.
