@@ -156,7 +156,8 @@ function canned_texts_field_is_empty() {
  * Implements hook_options_list().
  */
 function canned_texts_options_list($field, $instance, $entity_type, $entity) {
-  $res = db_query("SELECT name, label FROM {canned_texts} WHERE name IN (:names)", array(':names' => $field['settings']['allowed_values']))->fetchAll();
+  $res = db_query("SELECT name, label FROM {canned_texts} WHERE name IN (:names)", array(
+    ':names' => $field['settings']['allowed_values']))->fetchAll();
   foreach ($res as $canned_text) {
     $canned_texts[$canned_text->name] = check_plain($canned_text->label);
   }
