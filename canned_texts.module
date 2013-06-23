@@ -55,7 +55,7 @@ function canned_text_access($op, $type = NULL, $account = NULL) {
 }
 
 /**
- * Wrapper function for canned_texts_get_items().
+ * Load a single canned text item.
  */
 function canned_text_load($machine_name) {
   return canned_texts_get_items($machine_name);
@@ -156,8 +156,9 @@ function canned_texts_field_is_empty() {
  * Implements hook_options_list().
  */
 function canned_texts_options_list($field, $instance, $entity_type, $entity) {
+  $options = $field['settings']['allowed_values'];
   $res = db_query("SELECT name, label FROM {canned_texts} WHERE name IN (:names)", array(
-    ':names' => $field['settings']['allowed_values']))->fetchAll();
+    ':names' => empty($options) ? NULL : $options))->fetchAll();
   foreach ($res as $canned_text) {
     $canned_texts[$canned_text->name] = check_plain($canned_text->label);
   }
