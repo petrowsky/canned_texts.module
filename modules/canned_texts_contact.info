@@ -1,0 +1,6 @@
+name = Canned Texts Contact Form
+description = Allows canned texts to be used on the user contact form
+package = Other
+core = 7.x
+dependencies[] = contact
+dependencies[] = canned_texts

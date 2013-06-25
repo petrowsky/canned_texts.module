@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Canned Texts Contact Form Module
+ *
+ * Because the contact form is not an entity, we have to add
+ * the stuff manually.
+ */
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function canned_texts_contact_form_contact_personal_form_alter(&$form, &$form_state, $form_id) {
+  drupal_add_js(drupal_get_path('module', 'canned_texts') . '/canned_texts.js');
+
+  $form['contact_canned_texts'] = array(
+    '#title' => t('Text Templates'),
+    '#type' => 'select',
+    '#options' => array('hello_world' => 'Hello World', 'two' => 'two'),
+    '#default_value' => 'hello_world',
+    '#prefix' => "<div class ='canned-text-wrapper'>",
+    '#suffix' => "<a rel = 'edit-contact-canned-texts' href ='#' class ='canned-text-insert-button'>" . t('Insert') . '</a></div>',
+  );
+}
