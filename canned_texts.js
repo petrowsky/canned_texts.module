@@ -37,10 +37,10 @@ Drupal.behaviors.canned_texts.attach = function(context) {
   function insert(e) {
     var machine_name = $('#' + $(this).attr('rel')).val();
     var content = '';
-    var options = {}
+    var options = {};
 
     if (machine_name.length > 0) {
-      $.get(Drupal.settings.basePath + 'canned_texts/' + machine_name, function(data){
+      $.get(Drupal.settings.basePath + 'canned_texts/' + machine_name + '/' +  window.location.pathname, function(data){
         content = data;
 
         // Allow other modules to perform replacements.
@@ -82,7 +82,7 @@ Drupal.canned_texts_insert = {
     else if (Drupal.wysiwyg && Drupal.wysiwyg.activeId) {
       editorElement = document.getElementById(Drupal.wysiwyg.activeId);
       Drupal.canned_texts_insert.activateTabPane(editorElement);
-      Drupal.wysiwyg.instances[Drupal.wysiwyg.activeId].insert(content)
+      Drupal.wysiwyg.instances[Drupal.wysiwyg.activeId].insert(content);
     }
     // FCKeditor module support.
     else if (typeof(FCKeditorAPI) != 'undefined' && typeof(fckActiveId) != 'undefined') {
