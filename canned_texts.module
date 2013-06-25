@@ -198,8 +198,16 @@ function canned_texts_menu() {
  * Ajax callback to load a canned text.
  */
 function canned_text_ajax_load($canned_text) {
+  if (arg(2) == 'user') {
+    $user = user_load(arg(3));
+  }
   if (!empty($canned_text->content)) {
-    print $canned_text->content;
+    if (module_exists('token')) {
+      print token_replace($canned_text->content, array('user' => $user));
+    }
+    else {
+      print $canned_text->content;
+    }
     exit;
   }
 }

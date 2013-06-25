@@ -46,6 +46,12 @@ function canned_text_form($form, &$form_state, $canned_text, $op = 'edit') {
     '#value' => t('Save canned text'),
     '#weight' => 40,
   );
+
+  if (module_exists('token')) {
+    $form['tokens'] = array(
+      '#markup' => theme('token_tree_link', array('token_types' => array('user'))),
+    );
+  }
   return $form;
 }
 
